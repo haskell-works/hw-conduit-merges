@@ -12,7 +12,7 @@ dependencies:
   override:
     - stack setup
     - stack clean
-    - stack build --test —no-run-tests
+    - stack build --test --no-run-tests
 
 test:
   override:
