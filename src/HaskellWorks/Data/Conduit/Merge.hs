@@ -2,12 +2,13 @@
 module HaskellWorks.Data.Conduit.Merge
 ( JoinResult (..)
 , joinSources
+, joinResumableSources
 )
 where
 
 import Control.Monad (foldM)
 import Control.Monad.Trans (lift)
-import Data.Conduit (Source, newResumableSource, await, yield, leftover, ($$++))
+import Data.Conduit (Source, ResumableSource, newResumableSource, await, yield, leftover, ($$++))
 
 {-| A result value of joining two sources.
 
@@ -54,7 +55,21 @@ joinSources :: Monad m
             -> Source m (JoinResult a v b)
             -- ^ Result source that can contain a value or leftovers on each side
 joinSources f as bs =
-  go (newResumableSource as) (newResumableSource bs)
+  joinResumableSources f (newResumableSource as) (newResumableSource bs)
+
+
+joinResumableSources :: Monad m
+            => (a -> b -> ([a], [v], [b]))
+            -- ^ Function to merge values.
+            --   The result contains values @v@ and possible leftovers @a@ and @b@
+            --   for left and right streams.
+            -> ResumableSource m a
+            -- ^ Left side source
+            -> ResumableSource m b
+            -- ^ Right side source
+            -> Source m (JoinResult a v b)
+            -- ^ Result source that can contain a value or leftovers on each side
+joinResumableSources f = go
   where
     go ras rbs = do
       (ras', ma) <- lift $ ras $$++ await
@@ -68,8 +83,6 @@ joinSources f as bs =
           mapM_ (yield . JoinValue) vs
           ras'' <- lift $ pushLeftovers ras' ls
           rbs'' <- lift $ pushLeftovers rbs' rs
-          -- yield (JoinValue $ head vs)
-          -- traverse (yield . JoinValue) vs
           go ras'' rbs''
     pushLeftovers = foldM (\vs' l -> fst <$> (vs' $$++ leftover l))
 
