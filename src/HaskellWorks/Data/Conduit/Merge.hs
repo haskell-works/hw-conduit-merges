@@ -84,7 +84,7 @@ joinResumableSources f = go
           ras'' <- lift $ pushLeftovers ras' ls
           rbs'' <- lift $ pushLeftovers rbs' rs
           go ras'' rbs''
-    pushLeftovers = foldM (\vs' l -> fst <$> (vs' $$++ leftover l))
+    pushLeftovers s ls = foldM (\vs' l -> fst <$> (vs' $$++ leftover l)) s (reverse ls)
 
 -- fullZip :: Monad m
 --         => Source m a
