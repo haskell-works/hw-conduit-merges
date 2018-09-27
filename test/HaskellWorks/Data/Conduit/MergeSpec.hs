@@ -1,12 +1,12 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -fno-warn-type-defaults #-}
-module HaskellWorks.Data.Conduit.MergeSpec
-where
 
-import HaskellWorks.Data.Conduit.Merge
+module HaskellWorks.Data.Conduit.MergeSpec where
+
 import Control.Monad.Identity
 import Data.Conduit
-import Data.Conduit.List as CL
+import Data.Conduit.List               as CL
+import HaskellWorks.Data.Conduit.Merge
 import Test.Hspec
 
 comb :: (Ord a, Num a) => a -> a -> ([a], [a], [a])
@@ -72,7 +72,7 @@ merge as bs = runFor (CL.sourceList as) (CL.sourceList bs)
 
 mergeComb :: (a -> b -> ([a], [v], [b])) -> [a] -> [b] -> [JoinResult a v b]
 mergeComb f as bs =
-  runIdentity $ joinSources f (CL.sourceList as) (CL.sourceList bs) $$ CL.take 10
+  runIdentity $ runConduit $ joinSources f (CL.sourceList as) (CL.sourceList bs) .| CL.take 10
 
-runFor :: Source Identity Int -> Source Identity Int -> [JoinResult Int Int Int]
-runFor as bs = runIdentity $ joinSources comb as bs $$ CL.take 1000
+runFor :: ConduitT () Int Identity () -> ConduitT () Int Identity () -> [JoinResult Int Int Int]
+runFor as bs = runIdentity $ runConduit $ joinSources comb as bs .| CL.take 1000

@@ -1,13 +1,15 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -fno-warn-type-defaults #-}
-module HaskellWorks.Data.Conduit.LeftoverSpec
-where
 
-import HaskellWorks.Data.Conduit.Merge
+module HaskellWorks.Data.Conduit.LeftoverSpec where
+
 import Control.Monad.Identity
 import Data.Conduit
-import Data.Conduit.List as CL
+import Data.Conduit.List               as CL
+import HaskellWorks.Data.Conduit.Merge
 import Test.Hspec
+
+{-# ANN module ("HLint: Ignore Redundant do" :: String) #-}
 
 comb :: (Ord a, Enum a, Num a) => a -> a -> ([a], [a], [a])
 comb a b
@@ -27,5 +29,5 @@ spec = describe "HaskellWorks.Data.Conduit.LeftoverSpec" $ do
 merge :: [Int] -> [Int] -> [JoinResult Int Int Int]
 merge as bs = runFor (CL.sourceList as) (CL.sourceList bs)
 
-runFor :: Source Identity Int -> Source Identity Int -> [JoinResult Int Int Int]
-runFor as bs = runIdentity $ joinSources comb as bs $$ CL.take 1000
+runFor :: ConduitT () Int Identity () -> ConduitT () Int Identity () -> [JoinResult Int Int Int]
+runFor as bs = runIdentity $ runConduit $ joinSources comb as bs .| CL.take 1000
