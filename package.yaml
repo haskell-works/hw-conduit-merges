@@ -1,0 +1,37 @@
+name: hw-conduit-merges
+version: '0.1.0.0'
+synopsis: Additional merges and joins for Conduit
+description: Please see README.md
+category: Data, Conduit
+author: Alexey Raga
+maintainer: alexey.raga@gmail.com
+copyright: Alexey Raga
+license: UnspecifiedLicense
+github: haskell-works/hw-conduit-merges
+dependencies:
+- conduit
+- conduit-extra
+- mtl
+library:
+  source-dirs: src
+  ghc-options: -Wall
+  exposed-modules:
+  - HaskellWorks.Data.Conduit.Merge
+  dependencies:
+  - base >=4.7 && <5
+tests:
+  hw-conduit-merges-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options:
+    - -Wall
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -fno-warn-type-defaults
+    dependencies:
+    - base
+    - bytestring
+    - hw-conduit-merges
+    - hspec
+    - QuickCheck

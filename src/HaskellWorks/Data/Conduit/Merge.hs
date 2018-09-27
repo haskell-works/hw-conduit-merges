@@ -1,14 +1,13 @@
 {-# LANGUAGE RankNTypes #-}
 module HaskellWorks.Data.Conduit.Merge
-( JoinResult (..)
-, joinSources
-, joinResumableSources
-)
-where
+  ( JoinResult (..)
+  , joinSources
+  , joinResumableSources
+  ) where
 
-import Control.Monad (foldM)
+import Control.Monad       (foldM)
 import Control.Monad.Trans (lift)
-import Data.Conduit (Source, ResumableSource, newResumableSource, await, yield, leftover, ($$++))
+import Data.Conduit        (ConduitT, SealedConduitT, await, leftover, sealConduitT, yield, ($$++))
 
 {-| A result value of joining two sources.
 
@@ -48,14 +47,13 @@ joinSources :: Monad m
             -- ^ Function to merge values.
             --   The result contains values @v@ and possible leftovers @a@ and @b@
             --   for left and right streams.
-            -> Source m a
+            -> ConduitT () a m ()
             -- ^ Left side source
-            -> Source m b
+            -> ConduitT () b m ()
             -- ^ Right side source
-            -> Source m (JoinResult a v b)
+            -> ConduitT () (JoinResult a v b) m ()
             -- ^ Result source that can contain a value or leftovers on each side
-joinSources f as bs =
-  joinResumableSources f (newResumableSource as) (newResumableSource bs)
+joinSources f as bs = joinResumableSources f (sealConduitT as) (sealConduitT bs)
 
 
 joinResumableSources :: Monad m
@@ -63,11 +61,11 @@ joinResumableSources :: Monad m
             -- ^ Function to merge values.
             --   The result contains values @v@ and possible leftovers @a@ and @b@
             --   for left and right streams.
-            -> ResumableSource m a
+            -> SealedConduitT () a m ()
             -- ^ Left side source
-            -> ResumableSource m b
+            -> SealedConduitT () b m ()
             -- ^ Right side source
-            -> Source m (JoinResult a v b)
+            -> ConduitT () (JoinResult a v b) m ()
             -- ^ Result source that can contain a value or leftovers on each side
 joinResumableSources f = go
   where
