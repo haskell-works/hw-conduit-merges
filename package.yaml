@@ -1,5 +1,5 @@
 name: hw-conduit-merges
-version: '0.1.0.0'
+version: '0.2.0.0'
 synopsis: Additional merges and joins for Conduit
 description: Please see README.md
 category: Data, Conduit
