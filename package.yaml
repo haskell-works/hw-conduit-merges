@@ -6,7 +6,7 @@ category: Data, Conduit
 author: Alexey Raga
 maintainer: alexey.raga@gmail.com
 copyright: Alexey Raga
-license: UnspecifiedLicense
+license: BSD3
 github: haskell-works/hw-conduit-merges
 dependencies:
 - conduit
