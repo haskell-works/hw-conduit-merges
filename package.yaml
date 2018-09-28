@@ -9,7 +9,7 @@ copyright: Alexey Raga
 license: BSD3
 github: haskell-works/hw-conduit-merges
 dependencies:
-- conduit
+- conduit >= 1.3
 - conduit-extra
 - mtl
 library:
