@@ -22,4 +22,3 @@ cabal.sandbox.config
 /result
 TAGS
 #*
-/*.cabal
