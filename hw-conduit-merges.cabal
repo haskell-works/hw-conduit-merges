@@ -1,0 +1,54 @@
+name:           hw-conduit-merges
+version:        0.2.0.0
+synopsis:       Additional merges and joins for Conduit
+description:    Additional merges and joins for Conduit. Please see README.md
+category:       Data, Conduit
+homepage:       https://github.com/haskell-works/hw-conduit-merges#readme
+bug-reports:    https://github.com/haskell-works/hw-conduit-merges/issues
+author:         Alexey Raga
+maintainer:     alexey.raga@gmail.com
+copyright:      Alexey Raga
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+cabal-version:  >= 1.10
+
+source-repository head
+  type: git
+  location: https://github.com/haskell-works/hw-conduit-merges
+
+library
+  exposed-modules:
+      HaskellWorks.Data.Conduit.Merge
+  other-modules:
+      Paths_hw_conduit_merges
+  hs-source-dirs:
+      src
+  ghc-options: -Wall
+  build-depends:
+      base >=4.7 && <5
+    , conduit >=1.3
+    , conduit-extra
+    , mtl
+  default-language: Haskell2010
+
+test-suite hw-conduit-merges-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      HaskellWorks.Data.Conduit.LeftoverSpec
+      HaskellWorks.Data.Conduit.MergeSpec
+      Paths_hw_conduit_merges
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N -fno-warn-type-defaults
+  build-depends:
+      QuickCheck
+    , base
+    , bytestring
+    , conduit >=1.3
+    , conduit-extra
+    , hspec
+    , hw-conduit-merges
+    , mtl
+  default-language: Haskell2010
