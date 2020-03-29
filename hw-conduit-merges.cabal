@@ -57,5 +57,6 @@ test-suite hw-conduit-merges-test
                         HaskellWorks.Data.Conduit.MergeSpec
                         Paths_hw_conduit_merges
   autogen-modules:      Paths_hw_conduit_merges
+  build-tool-depends:   hspec-discover:hspec-discover
   hs-source-dirs:       test
   ghc-options:          -threaded -rtsopts -with-rtsopts=-N -fno-warn-type-defaults
