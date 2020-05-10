@@ -9,7 +9,7 @@ import Data.Conduit.List               as CL
 import HaskellWorks.Data.Conduit.Merge
 import Test.Hspec
 
-{-# ANN module ("HLint: Ignore Redundant do" :: String) #-}
+{- HLINT Ignore "Redundant do"  -}
 
 comb :: (Ord a, Enum a, Num a) => a -> a -> ([a], [a], [a])
 comb a b
