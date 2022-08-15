@@ -19,15 +19,15 @@ source-repository head
   type: git
   location: https://github.com/haskell-works/hw-conduit-merges
 
-common base                 { build-depends: base                 >= 4.7    && <  5   }
+common base                 { build-depends: base                 >= 4.7    && < 5    }
 
-common bytestring           { build-depends: bytestring                               }
-common conduit              { build-depends: conduit              >= 1.3              }
-common conduit-extra        { build-depends: conduit-extra                            }
-common hspec                { build-depends: hspec                                    }
+common bytestring           { build-depends: bytestring                        < 0.12 }
+common conduit              { build-depends: conduit              >= 1.3    && < 1.4  }
+common conduit-extra        { build-depends: conduit-extra                     < 1.4  }
+common hspec                { build-depends: hspec                             < 3    }
 common hw-conduit-merges    { build-depends: hw-conduit-merges                        }
-common mtl                  { build-depends: mtl                                      }
-common QuickCheck           { build-depends: QuickCheck                               }
+common mtl                  { build-depends: mtl                               < 3    }
+common QuickCheck           { build-depends: QuickCheck                        < 2.15 }
 
 common config
   default-language:     Haskell2010
